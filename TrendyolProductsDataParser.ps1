@@ -36,20 +36,20 @@ foreach ($product in $products) {
 
     # Construct the product model
     $productModel = [ordered]@{
-        'Ürün Adı'  = $product.name
+        'Urun Adi'  = $product.name
         'Marka' = $product.brand
         'Kategori' = $product.category.name
         'Fiyat' = "`t"+$product.price.currentText
-        'İndirimli Fiyat' = "`t"+$product.price.discountedPriceText
+        'Indirimli Fiyat' = "`t"+$product.price.discountedPriceText
         'Resim' = $product.image
-        'Ürün Rengi' = $product.colorId
-        'Bedava Kargo' = if ($product.isFreeCargo) { "Evet" } else { "Hayır" }
-        'Ürün İçerik ID' = "`t"+$product.contentId
+        'Urun Rengi' = $product.colorId
+        'Bedava Kargo' = if ($product.isFreeCargo) { "Evet" } else { "Hayir" }
+        'Urun Icerik ID' = "`t"+$product.contentId
         'Promosyon' = $product.promotion.name
-        'Promosyon Bitiş Tarihi' = if ($product.promotion.promotionEndDate -ne $null) { $date = [DateTime]::ParseExact($product.promotion.promotionEndDate, "yyyy-MM-ddTHH:mm:ss", $null); $date.ToString("dd/MM/yyyy HH:mm") } else { $null }
-        'Ortalama Beğeni Skoru' = [math]::Round($product.ratingScore.averageRating, 2)
-        'Kupon Kazandırma' = if ($product.hasCollectableCoupon) { "Evet" } else { "Hayır" }
-        'Aynı Gün Kargo' = if ($product.sameDayShipping) { "Evet" } else { "Hayır" }
+        'Promosyon Bitis Tarihi' = if ($product.promotion.promotionEndDate -ne $null) { $date = [DateTime]::ParseExact($product.promotion.promotionEndDate, "yyyy-MM-ddTHH:mm:ss", $null); $date.ToString("dd/MM/yyyy HH:mm") } else { $null }
+        'Ortalama Begeni Skoru' = [math]::Round($product.ratingScore.averageRating, 2)
+        'Kupon Kazandirma' = if ($product.hasCollectableCoupon) { "Evet" } else { "Hayir" }
+        'Ayni Gun Kargo' = if ($product.sameDayShipping) { "Evet" } else { "Hayir" }
         'Url' = "https://www.trendyol.com"+$product.url
     }
 
