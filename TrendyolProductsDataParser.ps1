@@ -1,4 +1,14 @@
-﻿# Create an empty array to store products data from responses:
+﻿# This script exports data for the best seller first 5000 products in a category from Trendyol to a CSV file.
+
+# Get the current datetime and format the current datetime into a string that can be used in a filename:
+$currentTime = Get-Date
+$currentTimeFormatted=$currentTime.ToString("ddMMyyyy_HHmm")
+
+# Construct the filename for the CSV file using the formatted datetime and define the full path for the new CSV file
+$csvFileName="TrendyolProductsData_$($currentTimeFormatted).csv"
+$csvFilePath="C:\Users\User\Documents\"+$csvFileName;
+
+# Create an empty array to store products data from responses:
 $products = @()
 
 # Initialize pageIndex for query:
@@ -19,3 +29,34 @@ do {
 
     } while ($response.appliedSearchStrategy -ne "NO_RESULT" -and $products.Count -ne 5000)
 
+
+# Initialize an empty array for storing product csv data:
+$csvProducts=@()
+foreach ($product in $products) {
+
+    # Construct the product model
+    $productModel = [ordered]@{
+        'Ürün Adı'  = $product.name
+        'Marka' = $product.brand
+        'Kategori' = $product.category.name
+        'Fiyat' = "`t"+$product.price.currentText
+        'İndirimli Fiyat' = "`t"+$product.price.discountedPriceText
+        'Resim' = $product.image
+        'Ürün Rengi' = $product.colorId
+        'Bedava Kargo' = if ($product.isFreeCargo) { "Evet" } else { "Hayır" }
+        'Ürün İçerik ID' = "`t"+$product.contentId
+        'Promosyon' = $product.promotion.name
+        'Promosyon Bitiş Tarihi' = if ($product.promotion.promotionEndDate -ne $null) { $date = [DateTime]::ParseExact($product.promotion.promotionEndDate, "yyyy-MM-ddTHH:mm:ss", $null); $date.ToString("dd/MM/yyyy HH:mm") } else { $null }
+        'Ortalama Beğeni Skoru' = [math]::Round($product.ratingScore.averageRating, 2)
+        'Kupon Kazandırma' = if ($product.hasCollectableCoupon) { "Evet" } else { "Hayır" }
+        'Aynı Gün Kargo' = if ($product.sameDayShipping) { "Evet" } else { "Hayır" }
+        'Url' = "https://www.trendyol.com"+$product.url
+    }
+
+    # Transform the product model into a custom object and add it to the array:
+    $productItem = New-Object PSObject -Property $productModel
+    $csvProducts+=$productItem
+}
+
+# Convert the array of product data into CSV format and save it to a file:
+$csvProducts | ConvertTo-Csv -NoTypeInformation | Set-Content $csvFilePath
