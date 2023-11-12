@@ -39,8 +39,8 @@ foreach ($product in $products) {
         'Urun Adi'  = $product.name
         'Marka' = $product.brand
         'Kategori' = $product.category.name
-        'Fiyat' = "`t"+$product.price.currentText
-        'Indirimli Fiyat' = "`t"+$product.price.discountedPriceText
+        'Fiyat' = "`t"+$product.price.originalPrice
+        'Indirimli Fiyat' = "`t"+$product.price.discountedPrice
         'Resim' = $product.image
         'Urun Rengi' = $product.colorId
         'Bedava Kargo' = if ($product.isFreeCargo) { "Evet" } else { "Hayir" }
