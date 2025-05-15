@@ -10,7 +10,7 @@ $pathModel="tablet-x-c103665"
 
 You can find the category code for other categories on the Trendyol's website. (The image below shows an example of how to get the relevant code from the Trendyol's website) :
 
-![](https://raw.githubusercontent.com/canerkonuk/TrendyolPowershellDataParser/master/ExampleProductCategoryCode.png?token=GHSAT0AAAAAACOC6TXAICSE2J6R7JDVAGZYZOKRV6A)
+![](https://raw.githubusercontent.com/canerkonuk/TrendyolPowershellDataParser/refs/heads/master/ExampleProductCategoryCode.png)
 
 The script uses an Trendyol's API endpoint that’s designed for mobile browsers. This endpoint allows to fetch a maximum of 100 items per request with the `pageSize` query parameter. However, once the multiply of `pageSize` and `pageIndex` values exceeds 5000, the endpoint will not return any data. So, for categories with more than 5000 products, the script will make a maximum of 50 requests, each fetching 100 items. (You can use the `offset` query parameter in the URL. But, despite using this query parameter, the retrieval of more than 5000 products data was still not possible.)
 
